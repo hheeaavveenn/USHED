@@ -1,18 +1,5 @@
-This repository contains the official implementation of the manuscript:
-
-**"Enhancing Underwater Object Detection through Hybrid Sparse-Annotation Optimization "**  
-submitted to *The Visual Computer* 
-.
-## Overview
-
-U-SHED (Underwater Sparse-annotation Hybrid Enhancement for Detection) targets sparsely-annotated underwater object detection by combining a three-branch teacher–student architecture with three core modules: Dynamic Pseudo-label Filtering (DPF), Self-supervised Feature Enhancement (SFE, BYOL-style), and Multi-dimensional Pseudo-label Optimization (MPO). The project is built on cvpods and can be run directly from the project root directory.
-
-## Highlights
-
-- **DPF**: Score/IoU dual thresholds are linearly scheduled over training iterations to balance pseudo-label coverage and quality.
-- **SFE**: An EMA target branch based on USHEDBYOL stabilizes semantics under strong/underwater augmentations.
-- **MPO**: Re-weights pseudo labels by scale, cross-view consistency, and semantic similarity to suppress noisy labels.
-
+## Enhancing Underwater Object Detection through Hybrid Sparse-Annotation Optimization 
+This repository contains the official implementation of **U-SHED**, a hybrid sparse-annotation enhancement framework designed for robust underwater object detection. 
 
 ## Layout
 
@@ -56,16 +43,18 @@ U-SHED/
 pip install -r requirements.txt
 ```
 
-## Quick Start
+## Pretrained Weights
 
-1. **Set environment variables**
-   ```bash
-   export CVPODS_DATA_ROOT=/path/to/datasets
-   export PRETRAINED_MODEL_PATH=/path/to/pretrained_models/R-50.pkl
-   export OUTPUT_DIR=/path/to/outputs
-   export CUDA_VISIBLE_DEVICES=0
-   ```
-2. **Launch training**
+- U-SHED expects a ResNet-50 backbone checkpoint at:
+  - `pretrained_models/R-50.pkl`
+- You can use:
+  - A COCO-pretrained `R-50` checkpoint compatible with `cvpods`, or
+  - Your own ResNet-50 checkpoint trained in `cvpods`.
+- Place the file at `pretrained_models/R-50.pkl`, or override the path with:
+  - `export PRETRAINED_MODEL_PATH=/absolute/path/to/your/R-50.pkl`
+
+## Quick Start
+**Launch training**
    ```bash
    cd /path/to/U-SHED
    python train.py --num-gpus 1
@@ -77,32 +66,9 @@ pip install -r requirements.txt
    ./train.sh
    ```
 
-## Pretrained Weights
-
-- U-SHED expects a ResNet-50 backbone checkpoint at:
-  - `pretrained_models/R-50.pkl`
-- You can use:
-  - A COCO-pretrained `R-50` checkpoint compatible with `cvpods`, or
-  - Your own ResNet-50 checkpoint trained in `cvpods`.
-- Place the file at `pretrained_models/R-50.pkl`, or override the path with:
-  - `export PRETRAINED_MODEL_PATH=/absolute/path/to/your/R-50.pkl`
-
-## Dataset Layout
-
-```
-datasets/DUO/
-├── images/{train,test}/
-└── annotations/
-    ├── instances_train.json
-    ├── train_sparse_10p.json
-    ├── train_sparse_30p.json
-    ├── train_sparse_50p.json
-    └── instances_test.json
-```
-
-## Module Notes
-
-- **DPF**: Implemented in `ushed/modeling/fcos.py` via `_dpf_dynamic_score_thr`, `_dpf_dynamic_iou_thr`, and `pseudo_gt_generate` for dynamic threshold scheduling and pseudo-label filtering. The scheduler logic is encapsulated in `ushed/modeling/dpf.py`.
-- **SFE**: `enhancements/ssl/simplified_byol.py` (USHEDBYOL) and `simplified_sfe.py` provide the BYOL head; `ushed/modeling/net.py` injects SFE according to `MODEL.SFE`.
-- **MPO**: `ushed/modeling/mpo.py` produces quality weights from scale (`w_s`), cross-view consistency (`w_c`), and semantic similarity (`w_sem`), and `ushed/modeling/fcos.py` applies them to pseudo labels.
-
+## Citations
+@article{
+   title = {Enhancing Underwater Object Detection through Hybrid Sparse-Annotation Optimization},
+   url={https://github.com/Y-HeAvEn/USHED},
+   journal = {The Visual Computer}   
+}
