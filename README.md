@@ -1,5 +1,5 @@
 ## Enhancing Underwater Object Detection through Hybrid Sparse-Annotation Optimization 
-This repository contains the official implementation of **U-SHED**, a hybrid sparse-annotation enhancement framework designed for robust underwater object detection. 
+This repository contains the official implementation of the manuscript "Enhancing Underwater Object Detection through Hybrid Sparse-Annotation Optimization",submitted to *The Visual Computer*.
 <p align="center">
   <img src="./img.jpg" width="850">
 </p>
